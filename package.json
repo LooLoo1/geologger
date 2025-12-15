@@ -1,0 +1,22 @@
+{
+  "name": "GeoLogger",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev:frontend": "pnpm --filter frontend dev",
+    "dev:backend": "pnpm --filter backend dev",
+    "dev:tauri": "pnpm --filter tauri-app tauri dev",
+    "dev:tauri:android": "pnpm --filter tauri-app tauri android dev",
+    "dev": "concurrently \"pnpm dev:backend\" \"pnpm dev:frontend\"",
+    "tauri:build": "pnpm --filter frontend build && pnpm --filter tauri-app tauri build",
+    "build": "pnpm --filter frontend build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.15.0",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
