@@ -11,14 +11,14 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 // Middleware
-const allowedOrigins = [
-  'http://localhost:1420',
-  'http://localhost:3000',
-  process.env.FRONTEND_URL,
-].filter(Boolean) as string[];
+// const allowedOrigins = [
+//   'http://localhost:1420',
+//   'http://localhost:3000',
+//   process.env.FRONTEND_URL,
+// ].filter(Boolean) as string[];
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: ["*"],
   credentials: true,
 }));
 app.use(express.json());
