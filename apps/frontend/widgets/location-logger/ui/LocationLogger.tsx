@@ -42,10 +42,22 @@ export const LocationLogger: React.FC = () => {
       const logLocationAsync = async () => {
         setIsLogging(true);
         try {
-          await logMutation.mutateAsync({ location, userId: user.id });
-          setLastLogged(new Date());
-        } catch {
-          // Error is handled by mutation error state
+          // Try to log online first
+          if (isOnline) {
+            try {
+              await logMutation.mutateAsync({ location, userId: user.id });
+              setLastLogged(new Date());
+            } catch (error) {
+              // If online request fails, save offline
+              console.warn('Online log failed, saving offline:', error);
+              await saveLocationOffline(location, user.id);
+            }
+          } else {
+            // Save offline if not online
+            await saveLocationOffline(location, user.id);
+          }
+        } catch (error) {
+          console.error('Failed to save location:', error);
         } finally {
           setIsLogging(false);
         }
@@ -53,7 +65,42 @@ export const LocationLogger: React.FC = () => {
       logLocationAsync();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location, isAuthenticated, user]);
+  }, [location, isAuthenticated, user, isOnline]);
+
+  // Helper function to save location offline
+  const saveLocationOffline = async (loc: typeof location, userId: string) => {
+    if (!loc) return;
+    
+    try {
+      const { storageService } = await import('../../../shared/lib/storage');
+      await storageService.saveLocationOffline({
+        id: `${userId}_${Date.now()}`,
+        userId,
+        lat: loc.lat,
+        lng: loc.lng,
+        altitude: loc.altitude,
+        timestamp: new Date().toISOString(),
+        synced: false,
+      });
+      setLastLogged(new Date());
+      
+      // Try to register background sync
+      if ('serviceWorker' in navigator) {
+        try {
+          const registration = await navigator.serviceWorker.ready;
+          // @ts-expect-error - sync API may not be in TypeScript types
+          if (registration.sync) {
+            // @ts-expect-error - sync API may not be in TypeScript types
+            await registration.sync.register('sync-locations');
+          }
+        } catch (syncError) {
+          console.warn('Background sync not available:', syncError);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to save location offline:', error);
+    }
+  };
 
   if (!isAuthenticated) {
     return (

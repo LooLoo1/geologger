@@ -74,9 +74,75 @@ self.addEventListener('sync', (event) => {
   }
 });
 
+// Periodic background sync for location logging (if supported)
+self.addEventListener('periodicsync', (event) => {
+  if (event.tag === 'periodic-location-sync') {
+    event.waitUntil(syncLocations());
+  }
+});
+
 async function syncLocations() {
-  // This will be called when the browser detects network connectivity
-  // The actual sync logic is handled in the app
-  console.log('Background sync triggered');
+  try {
+    console.log('Background sync triggered - syncing locations');
+    
+    // Get all clients (open app instances)
+    const clients = await self.clients.matchAll({
+      includeUncontrolled: true,
+      type: 'window'
+    });
+    
+    // Notify all clients to sync
+    clients.forEach(client => {
+      client.postMessage({
+        type: 'SYNC_LOCATIONS',
+        timestamp: Date.now()
+      });
+    });
+  } catch (error) {
+    console.error('Background sync failed:', error);
+  }
+}
+
+// Handle messages from the app
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+  
+  if (event.data && event.data.type === 'LOG_LOCATION') {
+    // Store location in IndexedDB for later sync
+    event.waitUntil(storeLocationForSync(event.data.location));
+  }
+});
+
+async function storeLocationForSync(location) {
+  try {
+    // Open IndexedDB
+    const db = await new Promise((resolve, reject) => {
+      const request = indexedDB.open('GeoLoggerDB', 1);
+      request.onerror = () => reject(request.error);
+      request.onsuccess = () => resolve(request.result);
+      request.onupgradeneeded = (event) => {
+        const db = event.target.result;
+        if (!db.objectStoreNames.contains('locations')) {
+          const store = db.createObjectStore('locations', { keyPath: 'id', autoIncrement: true });
+          store.createIndex('userId', 'userId', { unique: false });
+          store.createIndex('timestamp', 'timestamp', { unique: false });
+        }
+      };
+    });
+    
+    const transaction = db.transaction(['locations'], 'readwrite');
+    const store = transaction.objectStore('locations');
+    await store.add({
+      ...location,
+      synced: false,
+      timestamp: location.timestamp || new Date().toISOString()
+    });
+    
+    console.log('Location stored for sync:', location);
+  } catch (error) {
+    console.error('Failed to store location for sync:', error);
+  }
 }
 

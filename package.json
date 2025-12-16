@@ -13,7 +13,7 @@
     "dev:android": "./scripts/start-android-dev.sh",
     "tauri:build": "pnpm --filter frontend build && pnpm --filter tauri-app tauri build",
     "tauri:build:android": "pnpm --filter frontend build && pnpm --filter tauri-app tauri android build",
-    "tauri:build:android:apk": "pnpm --filter frontend build && pnpm --filter tauri-app tauri android build -- --apk",
+    "tauri:build:android:apk": "pnpm --filter frontend build && pnpm --filter tauri-app tauri android build && cd tauri && ./scripts/copy-android-files.sh && cd src-tauri/gen/android && ./gradlew assembleRelease",
     "build": "pnpm --filter frontend build",
     "build:backend": "pnpm --filter backend build",
     "deploy:backend": "pnpm install && pnpm --filter backend build",
