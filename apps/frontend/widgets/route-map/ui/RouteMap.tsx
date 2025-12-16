@@ -18,7 +18,7 @@ export const RouteMap: React.FC<RouteMapProps> = ({
   const { isAuthenticated } = useAuthStore();
   const { data: allLocations = [], isLoading, error } = useLocationsQuery();
   const [precision, setPrecision] = useState(1); // 1 = show every point, 2 = every 2nd, etc.
-  const [zoom, setZoom] = useState(13); // Default zoom level
+  const zoom = 25; // Default zoom level
 
   // Filter locations from the last 24 hours
   const locations = useMemo(() => {
@@ -87,16 +87,16 @@ export const RouteMap: React.FC<RouteMapProps> = ({
 
   if (!isAuthenticated) {
     return (
-      <div className="p-4 border rounded-lg bg-yellow-50 border-yellow-200">
-        <p className="text-yellow-800">Please log in to view your route</p>
+      <div className="p-3 sm:p-4 border rounded-lg bg-yellow-50 border-yellow-200">
+        <p className="text-xs sm:text-sm text-yellow-800">Please log in to view your route</p>
       </div>
     );
   }
 
   if (isLoading) {
     return (
-      <div className="p-4 border rounded-lg bg-white shadow-sm">
-        <div className="flex items-center justify-center h-96">
+      <div className="p-4 sm:p-6 border rounded-lg bg-white shadow-sm">
+        <div className="flex items-center justify-center h-[400px] sm:h-[500px] md:h-[600px]">
           <p className="text-gray-600">Loading route...</p>
         </div>
       </div>
@@ -105,18 +105,18 @@ export const RouteMap: React.FC<RouteMapProps> = ({
 
   if (error) {
     return (
-      <div className="p-4 border rounded-lg bg-red-50 border-red-200">
-        <p className="text-red-800">Error: {error instanceof Error ? error.message : 'Failed to load locations'}</p>
+      <div className="p-3 sm:p-4 border rounded-lg bg-red-50 border-red-200">
+        <p className="text-xs sm:text-sm text-red-800">Error: {error instanceof Error ? error.message : 'Failed to load locations'}</p>
       </div>
     );
   }
 
   return (
-    <div className="p-6 border rounded-lg bg-white shadow-sm">
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">Route Map (Last 24 Hours)</h2>
+    <div className="p-4 sm:p-6 border rounded-lg bg-white shadow-sm">
+      <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-gray-800">Route Map (Last 24 Hours)</h2>
       
-      <div className="mb-4 space-y-3">
-        <div className="text-sm text-gray-600">
+      <div className="mb-3 sm:mb-4 space-y-2 sm:space-y-3">
+        <div className="text-xs sm:text-sm text-gray-600">
           {locations.length > 0 ? (
             <p>Showing {locations.length} location{locations.length !== 1 ? 's' : ''} from the last 24 hours</p>
           ) : (
@@ -124,9 +124,9 @@ export const RouteMap: React.FC<RouteMapProps> = ({
           )}
         </div>
         
-        <div className="space-y-3">
-          <div className="flex items-center gap-4">
-            <label htmlFor="precision-slider" className="text-sm font-medium text-gray-700 min-w-[120px]">
+        <div className="space-y-2 sm:space-y-3">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+            <label htmlFor="precision-slider" className="text-xs sm:text-sm font-medium text-gray-700 sm:min-w-[120px]">
               Точність: кожен {precision === 1 ? 'точку' : `${precision}-й`}
             </label>
             <input
@@ -136,9 +136,9 @@ export const RouteMap: React.FC<RouteMapProps> = ({
               max="50"
               value={precision}
               onChange={(e) => setPrecision(Number(e.target.value))}
-              className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+              className="flex-1 w-full sm:w-auto h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
             />
-            <span className="text-sm text-gray-600 min-w-[60px]">{precision}</span>
+            <span className="text-xs sm:text-sm text-gray-600 sm:min-w-[60px]">{precision}</span>
           </div>
           
           {/* <div className="flex items-center gap-4">
@@ -159,7 +159,7 @@ export const RouteMap: React.FC<RouteMapProps> = ({
         </div>
       </div>
       
-      <div className="h-[600px] w-full rounded-lg overflow-hidden">
+      <div className="h-[400px] sm:h-[500px] md:h-[600px] w-full rounded-lg overflow-hidden">
         {mapProvider.render({
           locations,
           config: mapConfig,

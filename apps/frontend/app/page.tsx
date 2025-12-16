@@ -13,8 +13,8 @@ const RouteMap = dynamic(
   { 
     ssr: false,
     loading: () => (
-      <div className="p-6 border rounded-lg bg-white shadow-sm">
-        <div className="flex items-center justify-center h-[600px]">
+      <div className="p-4 sm:p-6 border rounded-lg bg-white shadow-sm">
+        <div className="flex items-center justify-center h-[400px] sm:h-[500px] md:h-[600px]">
           <p className="text-gray-600">Loading map...</p>
         </div>
       </div>
@@ -38,26 +38,28 @@ export default function Home() {
 
   if (loading && !forceShow) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50">
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
         <div className="text-center">
-          <p className="text-gray-900 text-lg">Loading...</p>
-          <p className="text-gray-500 text-sm mt-2">Please wait...</p>
+          <p className="text-gray-900 text-base sm:text-lg">Loading...</p>
+          <p className="text-gray-500 text-xs sm:text-sm mt-2">Please wait...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
+    <div className="min-h-screen bg-gray-50 py-4 px-3 sm:py-6 sm:px-4 md:py-8 md:px-4">
       <div className="max-w-6xl mx-auto">
-        <header className="mb-8 flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-gray-900">GeoLogger</h1>
+        <header className="mb-4 sm:mb-6 md:mb-8 flex-wrap flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">GeoLogger</h1>
           {isAuthenticated && (
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-600">Logged in as: {user?.email}</span>
+            <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-2 sm:gap-4 w-full sm:w-auto">
+              <span className="text-xs sm:text-sm text-gray-600 break-all sm:break-normal">
+                Logged in as: {user?.email}
+              </span>
               <button
                 onClick={clearAuth}
-                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+                className="px-3 py-1.5 sm:px-4 sm:py-2 bg-red-600 text-white text-sm sm:text-base rounded-md hover:bg-red-700 transition-colors w-full sm:w-auto"
               >
                 Logout
               </button>
@@ -65,7 +67,7 @@ export default function Home() {
           )}
         </header>
 
-        <main className="space-y-6">
+        <main className="space-y-4 sm:space-y-6">
           {isAuthenticated ? (
             <>
               <LocationLogger />

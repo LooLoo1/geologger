@@ -20,14 +20,14 @@ export const AuthForm: React.FC = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 border rounded-lg bg-white shadow-sm">
-      <h2 className="text-2xl font-bold mb-4">
+    <div className="max-w-md mx-auto p-4 sm:p-6 border rounded-lg bg-white shadow-sm">
+      <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">
         {isLogin ? 'Login' : 'Register'}
       </h2>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="email" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
             Email
           </label>
           <input
@@ -36,12 +36,12 @@ export const AuthForm: React.FC = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="password" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
             Password
           </label>
           <input
@@ -51,12 +51,12 @@ export const AuthForm: React.FC = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
             minLength={6}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         {error && (
-          <div className="p-3 bg-red-50 border border-red-200 rounded text-red-800 text-sm">
+          <div className="p-2 sm:p-3 bg-red-50 border border-red-200 rounded text-red-800 text-xs sm:text-sm">
             {error}
           </div>
         )}
@@ -64,20 +64,20 @@ export const AuthForm: React.FC = () => {
         <button
           type="submit"
           disabled={mutation.isPending}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-blue-600 text-white py-2 px-4 text-sm sm:text-base rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {mutation.isPending ? 'Loading...' : isLogin ? 'Login' : 'Register'}
         </button>
       </form>
 
-      <div className="mt-4 text-center">
+      <div className="mt-3 sm:mt-4 text-center">
         <button
           type="button"
           onClick={() => {
             setIsLogin(!isLogin);
             mutation.reset();
           }}
-          className="text-sm text-blue-600 hover:text-blue-800"
+          className="text-xs sm:text-sm text-blue-600 hover:text-blue-800"
         >
           {isLogin ? "Don't have an account? Register" : 'Already have an account? Login'}
         </button>
