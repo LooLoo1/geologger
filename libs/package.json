@@ -2,6 +2,24 @@
   "name": "@geologger/libs",
   "version": "1.0.0",
   "type": "module",
-  "main": "index.js",
-  "types": "index.d.ts"
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    },
+    "./types/*": {
+      "types": "./types/*.d.ts",
+      "default": "./types/*.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "tsup": "^8.0.0"
+  }
 }

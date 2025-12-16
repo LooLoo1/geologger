@@ -4,10 +4,10 @@
   "version": "0.1.0",
   "identifier": "com.geologger.app",
   "build": {
-    "beforeDevCommand": "cd ../../apps/frontend && pnpm dev",
-    "devUrl": "http://localhost:1420",
-    "beforeBuildCommand": "cd ../../apps/frontend && pnpm build",
-    "frontendDist": "../../apps/frontend/out"
+    "beforeDevCommand": "cd /Users/viburnum/Desktop/GeoLogger/apps/frontend && pnpm dev",
+    "devUrl": "http://10.0.2.2:1420",
+    "beforeBuildCommand": "cd /Users/viburnum/Desktop/GeoLogger/apps/frontend && pnpm build",
+    "frontendDist": "/Users/viburnum/Desktop/GeoLogger/apps/frontend/out"
   },
   "app": {
     "windows": [

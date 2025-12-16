@@ -2,6 +2,52 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Project Structure
+
+This project follows **Feature-Sliced Design (FSD)** architecture:
+
+```
+apps/frontend/
+├── app/              # Next.js app directory (pages, layout, providers)
+├── entities/         # Business entities (user, location)
+├── features/         # Business features (auth, location logging)
+├── widgets/          # Complex UI blocks (location-logger, route-map)
+└── shared/           # Shared resources
+    ├── api/          # API client (axios-based)
+    ├── config/       # Configuration
+    └── lib/          # Utilities (map providers, storage, query client)
+```
+
+### Map Providers
+
+The project supports multiple map providers with a pluggable architecture:
+
+- **Leaflet** (default) - Open-source, no API key required
+- **Google Maps** - Requires API key
+
+You can switch providers via environment variable `NEXT_PUBLIC_MAP_PROVIDER`:
+- `leaflet` (default)
+- `google-maps`
+
+### Environment Variables
+
+Create a `.env.local` file in the frontend directory with the following variables:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:4000
+NEXT_PUBLIC_MAP_PROVIDER=leaflet
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here  # Optional, only for Google Maps
+```
+
+To get a Google Maps API key:
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select an existing one
+3. Enable the Maps JavaScript API
+4. Create credentials (API Key)
+5. Add the API key to your `.env.local` file
+
+### Running the Development Server
+
 First, run the development server:
 
 ```bash
@@ -14,7 +60,7 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:1420](http://localhost:1420) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 

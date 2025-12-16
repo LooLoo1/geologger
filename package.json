@@ -4,13 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "setup": "./scripts/setup.sh",
+    "dev": "concurrently \"pnpm dev:backend\" \"pnpm dev:frontend\"",
     "dev:frontend": "pnpm --filter frontend dev",
     "dev:backend": "pnpm --filter backend dev",
     "dev:tauri": "pnpm --filter tauri-app tauri dev",
     "dev:tauri:android": "pnpm --filter tauri-app tauri android dev",
-    "dev": "concurrently \"pnpm dev:backend\" \"pnpm dev:frontend\"",
+    "dev:android": "./scripts/start-android-dev.sh",
     "tauri:build": "pnpm --filter frontend build && pnpm --filter tauri-app tauri build",
-    "build": "pnpm --filter frontend build"
+    "tauri:build:android": "pnpm --filter frontend build && pnpm --filter tauri-app tauri android build",
+    "tauri:build:android:apk": "pnpm --filter frontend build && pnpm --filter tauri-app tauri android build -- --apk",
+    "build": "pnpm --filter frontend build",
+    "postinstall": "pnpm --filter backend db:generate || true"
   },
   "keywords": [],
   "author": "",
