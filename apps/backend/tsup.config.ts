@@ -7,8 +7,8 @@ export default defineConfig({
   minify: false,
   sourcemap: true,
   clean: true,
-  // Don't bundle - keep file structure
-  bundle: false,
+  // Bundle is required when using aliases
+  bundle: true,
   dts: false,
   outDir: "dist",
   outExtension: () => ({ js: ".js" }),
