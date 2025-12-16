@@ -13,7 +13,10 @@ export class LocationController {
   }
 
   logLocation = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const { lat, lng, altitude, userId } = req.body as CreateLocationDto;
+    const { lat, lng, altitude, userId: bodyUserId } = req.body as CreateLocationDto;
+    
+    // Use userId from auth middleware if available, otherwise from body
+    const userId = (req as AuthRequest).user?.userId || bodyUserId;
 
     if (!lat || !lng || !userId) {
       throw new BadRequestError('Missing required fields: lat, lng, userId');

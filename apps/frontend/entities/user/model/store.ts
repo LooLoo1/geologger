@@ -26,6 +26,24 @@ export const useAuthStore = () => {
         return;
       }
 
+      // TEMPORARY: Auto-authenticate as specific user
+      const tempUser = {
+        id: 'ee7769cf-70e3-4bff-a436-8ce61179238f',
+        email: 'vitalii.petriv.viburnum@gmail.com',
+      };
+      const tempToken = 'temp-token-bypass-auth';
+
+      setState({
+        user: tempUser,
+        token: tempToken,
+        isAuthenticated: true,
+      });
+      localStorage.setItem(AUTH_TOKEN_KEY, tempToken);
+      localStorage.setItem(AUTH_USER_KEY, JSON.stringify(tempUser));
+      setLoading(false);
+
+      // Original auth code (commented out temporarily):
+      /*
       try {
         const storedToken = localStorage.getItem(AUTH_TOKEN_KEY);
         const storedUser = localStorage.getItem(AUTH_USER_KEY);
@@ -48,6 +66,7 @@ export const useAuthStore = () => {
       } finally {
         setLoading(false);
       }
+      */
     };
 
     const timeoutId = setTimeout(() => {

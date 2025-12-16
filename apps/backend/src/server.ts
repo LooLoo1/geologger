@@ -22,8 +22,6 @@ app.use(cors({
 }));
 app.use(express.json());
 
-app.options('*', cors());
-
 // Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
