@@ -33,12 +33,6 @@
   "scripts": {
     "build": "tsup",
     "start": "node dist/server.js",
-    "dev": "NODE_ENV=dev tsx watch src/server.ts",
-    "check:env": "tsx check-env.ts",
-    "db:generate": "prisma generate",
-    "db:migrate": "prisma migrate dev",
-    "db:migrate:deploy": "prisma migrate deploy",
-    "db:studio": "prisma studio",
-    "db:seed": "tsx prisma/seed.ts"
+    "dev": "NODE_ENV=dev tsx watch src/server.ts"
   }
 }

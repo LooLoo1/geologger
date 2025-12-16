@@ -16,3 +16,12 @@
 //     url: env("DATABASE_URL") ?? "file:./dev.db",
 //   },
 // });
+
+
+// Prisma Scripts
+// check:env": "tsx check-env.ts",
+// db:generate": "prisma generate",
+// db:migrate": "prisma migrate dev",
+// db:migrate:deploy": "prisma migrate deploy",
+// db:studio": "prisma studio",
+// db:seed": "tsx prisma/seed.ts"
