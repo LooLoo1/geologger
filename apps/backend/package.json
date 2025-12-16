@@ -8,9 +8,6 @@
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.15.0",
-  "engines": {
-    "node": "20.x"
-  },
   "dependencies": {
     "@geologger/libs": "workspace:*",
     "@prisma/client": "^6.1.0",
