@@ -1,6 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 import { locationApi } from '../../../shared/api/location';
 import { storageService } from '../../../shared/lib/storage';
+import { getRefetchInterval } from '../../../shared/lib/settings';
 import type { LocationLog } from '@geologger/libs/types/location';
 
 export interface LocationData {
@@ -10,10 +12,34 @@ export interface LocationData {
 }
 
 export const useLocationsQuery = () => {
+  const [refetchInterval, setRefetchInterval] = useState(() => getRefetchInterval());
+
+  // Синхронізуємо refetchInterval з localStorage
+  useEffect(() => {
+    const updateInterval = () => {
+      setRefetchInterval(getRefetchInterval());
+    };
+
+    // Оновлюємо при монтуванні
+    updateInterval();
+
+    // Слухаємо події зміни localStorage (якщо змінився в іншій вкладці)
+    window.addEventListener('storage', updateInterval);
+    
+    // Також слухаємо події через custom event для синхронізації в межах однієї вкладки
+    const handleStorageChange = () => updateInterval();
+    window.addEventListener('localStorage:refetchInterval', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', updateInterval);
+      window.removeEventListener('localStorage:refetchInterval', handleStorageChange);
+    };
+  }, []);
+
   return useQuery({
     queryKey: ['locations'],
     queryFn: locationApi.list,
-    refetchInterval: 30000, // Refetch every 30 seconds
+    refetchInterval,
   });
 };
 
